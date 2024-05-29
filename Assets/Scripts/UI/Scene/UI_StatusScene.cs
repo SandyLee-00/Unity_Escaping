@@ -24,7 +24,7 @@ public class UI_StatusScene : UI_Scene
         }
 
         Bind<GameObject>(typeof(GameObjects));
-        Bind<Text>(typeof(Texts));
+        BindText(typeof(Texts));
 
         // Manager.Game.Player.GetComponent<PlayerStat>().OnStatusChange += ChangeStatus;
 

@@ -86,7 +86,7 @@ public class PlayerHealthSystem : MonoBehaviour
 }
 
 /// <summary>
-/// TODO :
+/// TODO : Stat 만들던가 갖고와야 한다 
 /// </summary>
 public class PlayerStatHandler : MonoBehaviour
 {
@@ -95,6 +95,7 @@ public class PlayerStatHandler : MonoBehaviour
 
     private void Awake()
     {
+
     }
 }
 
