@@ -24,7 +24,8 @@ public class DataManager
 
     public void Init()
     {
-        Texts = LoadXml<TextDataLoader, int, TextData>("TextData").MakeDictionary();
+        // TODO :
+        // Texts = LoadXml<TextDataLoader, int, TextData>("TextData").MakeDictionary();
     }
 
     private Loader LoadXml<Loader, Key, Item>(string name) where Loader : ILoader<Key, Item>, new()

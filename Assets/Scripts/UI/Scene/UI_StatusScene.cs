@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_StatScene : UI_Scene
+public class UI_StatusScene : UI_Scene
 {
     public enum GameObjects
     {
