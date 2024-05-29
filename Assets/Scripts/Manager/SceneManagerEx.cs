@@ -32,7 +32,6 @@ public class SceneManagerEx
     public void LoadScene(Define.Scene type)
     {
         CurrentSceneComponent.Clear();
-        Managers.UI.CloseAllPopupUI();
 
         currentSceneType = type;
         SceneManager.LoadScene(GetSceneName(type));

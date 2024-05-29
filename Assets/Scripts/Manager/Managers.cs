@@ -44,7 +44,6 @@ public class Managers : MonoBehaviour
 
             // 매니저 객체 만들어주기
             s_soundManager.Init();
-            s_uiManager.Init();
 
             // 데이터 로드
             s_dataManager.Init();

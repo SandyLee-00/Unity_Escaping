@@ -9,24 +9,19 @@ public class UIManager
 {
     int order = -20;
     Stack<UI_Popup> popupStack = new Stack<UI_Popup>();
+    public UI_Scene SceneUI { get; private set; }
 
-    private GameObject uiManager = null;
-
-    /// <summary>
-    /// UIManager GameObject 생성
-    /// UI 생성할 때 루트로 설정할 오브젝트
-    /// 씬 넘어가면 uiRoot 밑에 있는 UI들은 전부 삭제된다.
-    /// </summary>
-    public void Init()
+    public GameObject Root
     {
-        if (uiManager == null)
+        get
         {
-            uiManager = GameObject.Find("UIManager");
-            if (uiManager == null)
+            GameObject root = GameObject.Find("UI_Root");
+            if (root == null)
             {
-                uiManager = new GameObject { name = "UIManager" };
-                UnityEngine.Object.DontDestroyOnLoad(uiManager);
+                root = new GameObject { name = "UI_Root" };
             }
+
+            return root;
         }
     }
 
@@ -83,7 +78,7 @@ public class UIManager
         }
         else
         {
-            _gameObject.transform.SetParent(uiManager.transform);
+            _gameObject.transform.SetParent(Root.transform);
         }
 
         _gameObject.transform.localScale = Vector3.one;
@@ -154,5 +149,33 @@ public class UIManager
         {
             ClosePopupUI();
         }
+    }
+
+    /// <summary>
+    /// Scene UI는 여기서 Instantiate 한다.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public T ShowSceneUI<T>(string name = null) where T : UI_Scene
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            name = typeof(T).Name;
+        }
+
+        GameObject prefab = Resources.Load<GameObject>($"Prefabs/UI/Scene/{name}");
+        if (prefab == null)
+        {
+            Debug.LogError($"UIManager::ShowSceneUI() prefab is null. name = {name}");
+            return null;
+        }
+        GameObject _gameObject = Managers.Resource.Instantiate(prefab);
+        T sceneUI = _gameObject.GetOrAddComponent<T>();
+        SceneUI = sceneUI;
+
+        _gameObject.transform.SetParent(Root.transform);
+
+        return sceneUI;
     }
 }
