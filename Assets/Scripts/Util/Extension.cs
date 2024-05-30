@@ -42,4 +42,9 @@ public static class Extension
         int index = _random.Next(list.Count);
         return list[index];
     }
+
+    public static bool IsValid(this GameObject _gameObject)
+    {
+        return (_gameObject != null) && _gameObject.activeSelf;
+    }
 }
