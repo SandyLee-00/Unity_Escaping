@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _rigidbody = gameObject.GetOrAddComponent<Rigidbody>();
         inputController = gameObject.GetOrAddComponent<PlayerInputController>();
+        playerStatHandler = gameObject.GetOrAddComponent<PlayerStatHandler>();
     }
 
     void Start()
@@ -28,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move(Vector2 moveInput)
     {
         moveDirection = new Vector3(moveInput.x, 0, moveInput.y);
+        Debug.Log(moveDirection);
     }
 
     private void Jump()

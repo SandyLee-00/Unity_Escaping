@@ -84,37 +84,3 @@ public class PlayerHealthSystem : MonoBehaviour
         OnDeath?.Invoke();
     }
 }
-
-/// <summary>
-/// TODO : Stat 만들던가 갖고와야 한다 
-/// </summary>
-public class PlayerStatHandler : MonoBehaviour
-{
-    [SerializeField]
-    public PlayerStat CurrentStat { get; private set; }
-
-    private void Awake()
-    {
-
-    }
-}
-
-/// <summary>
-/// TODO :
-/// </summary>
-[System.Serializable]
-public class PlayerStat
-{
-    public float maxHeath;
-    public float moveSpeed;
-}
-
-/// <summary>
-/// TODO :
-/// </summary>
-public class PlayerSO : ScriptableObject
-{
-    [Header("Player Stat")]
-    public float maxHealth;
-
-}

@@ -24,6 +24,8 @@ public class PlayerInputController : MonoBehaviour
 
     public void OnMove(InputValue value)
     {
+        Debug.Log("OnMove");
+
         Vector2 moveInput = value.Get<Vector2>().normalized;
 
         OnMoveEvent?.Invoke(moveInput);
@@ -35,6 +37,8 @@ public class PlayerInputController : MonoBehaviour
     /// <param name="value"></param>
     public void OnLook(InputValue value)
     {
+        Debug.Log("OnLook");
+
         Vector2 mousePosition = value.Get<Vector2>();
         Vector3 mouseInWorldPosition = _camera.ScreenToWorldPoint(mousePosition);
         Vector3 lookDirection = mouseInWorldPosition - transform.position;
@@ -46,6 +50,7 @@ public class PlayerInputController : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
+        Debug.Log("OnJump");
         OnJumpEvent?.Invoke();
     }
 
