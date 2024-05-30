@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _rigidbody;
     private PlayerInputController inputController;
     private PlayerStatHandler playerStatHandler;
+    private PlayerState playerState;
+    private PlayerStatusSystem playerStatusSystem;
 
     private Vector3 moveDirection;
 
@@ -20,13 +23,17 @@ public class PlayerMovement : MonoBehaviour
     Camera _camera;
 
     [SerializeField]
-    private float jumptForce = 5f;
+    private float jumpForce = 5f;
+    [SerializeField]
+    private float costMPJump = 10f;
 
     private void Awake()
     {
         _rigidbody = gameObject.GetOrAddComponent<Rigidbody>();
         inputController = gameObject.GetOrAddComponent<PlayerInputController>();
         playerStatHandler = gameObject.GetOrAddComponent<PlayerStatHandler>();
+        playerState = gameObject.GetOrAddComponent<PlayerState>();
+        playerStatusSystem = gameObject.GetOrAddComponent<PlayerStatusSystem>();
     }
 
     void Start()
@@ -44,21 +51,35 @@ public class PlayerMovement : MonoBehaviour
         LookFixedUpdate(mouseDelta);
     }
 
-    private void LateUpdate()
-    {
-    }
-
     private void Move(Vector2 moveInput)
     {
         moveDirection = new Vector3(moveInput.x, moveInput.y, 0);
+
+        if (moveDirection.magnitude > 0)
+        {
+            playerState.State = PlayerStateEnum.Move;
+            playerState.InvokeStateChangeEvent();
+        }
+        else
+        {
+            playerState.State = PlayerStateEnum.Idle;
+            playerState.InvokeStateChangeEvent();
+        }
     }
 
     private void Jump()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, 1.1f))
+        if (playerState.State == PlayerStateEnum.Idle && playerStatusSystem.ChangeMP(costMPJump))
         {
-            _rigidbody.AddForce(Vector3.up * jumptForce, ForceMode.Impulse);
+            _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            playerState.State = PlayerStateEnum.Jump;
+            playerState.InvokeStateChangeEvent();
         }
+    }
+
+    public void JumpByOther(float jumpForce)
+    {
+        _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
     private void Look(Vector2 mouseDelta)
@@ -70,10 +91,10 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 direction = transform.forward * moveDirection.y + transform.right * moveDirection.x;
         Vector3 move = direction * playerStatHandler.CurrentStat.moveSpeed;
-        
+
         _rigidbody.velocity = new Vector3(move.x, _rigidbody.velocity.y, move.z);
     }
-    
+
     private void LookFixedUpdate(Vector2 mouseDelta)
     {
         yaw += mouseDelta.x * mouseSensitivity;

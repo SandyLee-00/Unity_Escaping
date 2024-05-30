@@ -375,7 +375,7 @@ public class FirstPersonController : MonoBehaviour
             // Calculate how fast we should be moving
             Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-            // Checks if player is walking and isGrounded
+            // Checks if playerState is walking and isGrounded
             // Will allow head bob
             if (targetVelocity.x != 0 || targetVelocity.z != 0 && isGrounded)
             {
@@ -398,7 +398,7 @@ public class FirstPersonController : MonoBehaviour
                 velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
                 velocityChange.y = 0;
 
-                // Player is only moving when valocity change != 0
+                // PlayerState is only moving when valocity change != 0
                 // Makes sure fov change only happens during movement
                 if (velocityChange.x != 0 || velocityChange.z != 0)
                 {
@@ -443,7 +443,7 @@ public class FirstPersonController : MonoBehaviour
         #endregion
     }
 
-    // Sets isGrounded based on a raycast sent straigth down from the player object
+    // Sets isGrounded based on a raycast sent straigth down from the playerState object
     private void CheckGround()
     {
         Vector3 origin = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y * .5f), transform.position.z);
@@ -463,7 +463,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Jump()
     {
-        // Adds force to the player rigidbody to jump
+        // Adds force to the playerState rigidbody to jump
         if (isGrounded)
         {
             rb.AddForce(0f, jumpPower, 0f, ForceMode.Impulse);
@@ -479,7 +479,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Crouch()
     {
-        // Stands player up to full height
+        // Stands playerState up to full height
         // Brings walkSpeed back up to original speed
         if(isCrouched)
         {
@@ -488,7 +488,7 @@ public class FirstPersonController : MonoBehaviour
 
             isCrouched = false;
         }
-        // Crouches player down to set height
+        // Crouches playerState down to set height
         // Reduces walkSpeed
         else
         {
@@ -563,13 +563,13 @@ public class FirstPersonController : MonoBehaviour
         EditorGUILayout.Space();
 
         fpc.playerCamera = (Camera)EditorGUILayout.ObjectField(new GUIContent("Camera", "Camera attached to the controller."), fpc.playerCamera, typeof(Camera), true);
-        fpc.fov = EditorGUILayout.Slider(new GUIContent("Field of View", "The camera’s view angle. Changes the player camera directly."), fpc.fov, fpc.zoomFOV, 179f);
+        fpc.fov = EditorGUILayout.Slider(new GUIContent("Field of View", "The camera’s view angle. Changes the playerState camera directly."), fpc.fov, fpc.zoomFOV, 179f);
         fpc.cameraCanMove = EditorGUILayout.ToggleLeft(new GUIContent("Enable Camera Rotation", "Determines if the camera is allowed to move."), fpc.cameraCanMove);
 
         GUI.enabled = fpc.cameraCanMove;
         fpc.invertCamera = EditorGUILayout.ToggleLeft(new GUIContent("Invert Camera Rotation", "Inverts the up and down movement of the camera."), fpc.invertCamera);
         fpc.mouseSensitivity = EditorGUILayout.Slider(new GUIContent("Look Sensitivity", "Determines how sensitive the mouse movement is."), fpc.mouseSensitivity, .1f, 10f);
-        fpc.maxLookAngle = EditorGUILayout.Slider(new GUIContent("Max Look Angle", "Determines the max and min angle the player camera is able to look."), fpc.maxLookAngle, 40, 90);
+        fpc.maxLookAngle = EditorGUILayout.Slider(new GUIContent("Max Look Angle", "Determines the max and min angle the playerState camera is able to look."), fpc.maxLookAngle, 40, 90);
         GUI.enabled = true;
 
         fpc.lockCursor = EditorGUILayout.ToggleLeft(new GUIContent("Lock and Hide Cursor", "Turns off the cursor visibility and locks it to the middle of the screen."), fpc.lockCursor);
@@ -597,10 +597,10 @@ public class FirstPersonController : MonoBehaviour
 
         GUILayout.Label("Zoom", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleLeft, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
 
-        fpc.enableZoom = EditorGUILayout.ToggleLeft(new GUIContent("Enable Zoom", "Determines if the player is able to zoom in while playing."), fpc.enableZoom);
+        fpc.enableZoom = EditorGUILayout.ToggleLeft(new GUIContent("Enable Zoom", "Determines if the playerState is able to zoom in while playing."), fpc.enableZoom);
 
         GUI.enabled = fpc.enableZoom;
-        fpc.holdToZoom = EditorGUILayout.ToggleLeft(new GUIContent("Hold to Zoom", "Requires the player to hold the zoom key instead if pressing to zoom and unzoom."), fpc.holdToZoom);
+        fpc.holdToZoom = EditorGUILayout.ToggleLeft(new GUIContent("Hold to Zoom", "Requires the playerState to hold the zoom key instead if pressing to zoom and unzoom."), fpc.holdToZoom);
         fpc.zoomKey = (KeyCode)EditorGUILayout.EnumPopup(new GUIContent("Zoom Key", "Determines what key is used to zoom."), fpc.zoomKey);
         fpc.zoomFOV = EditorGUILayout.Slider(new GUIContent("Zoom FOV", "Determines the field of view the camera zooms to."), fpc.zoomFOV, .1f, fpc.fov);
         fpc.zoomStepTime = EditorGUILayout.Slider(new GUIContent("Step Time", "Determines how fast the FOV transitions while zooming in."), fpc.zoomStepTime, .1f, 10f);
@@ -616,10 +616,10 @@ public class FirstPersonController : MonoBehaviour
         GUILayout.Label("Movement Setup", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
         EditorGUILayout.Space();
 
-        fpc.playerCanMove = EditorGUILayout.ToggleLeft(new GUIContent("Enable Player Movement", "Determines if the player is allowed to move."), fpc.playerCanMove);
+        fpc.playerCanMove = EditorGUILayout.ToggleLeft(new GUIContent("Enable PlayerState Movement", "Determines if the playerState is allowed to move."), fpc.playerCanMove);
 
         GUI.enabled = fpc.playerCanMove;
-        fpc.walkSpeed = EditorGUILayout.Slider(new GUIContent("Walk Speed", "Determines how fast the player will move while walking."), fpc.walkSpeed, .1f, fpc.sprintSpeed);
+        fpc.walkSpeed = EditorGUILayout.Slider(new GUIContent("Walk Speed", "Determines how fast the playerState will move while walking."), fpc.walkSpeed, .1f, fpc.sprintSpeed);
         GUI.enabled = true;
 
         EditorGUILayout.Space();
@@ -628,16 +628,16 @@ public class FirstPersonController : MonoBehaviour
 
         GUILayout.Label("Sprint", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleLeft, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
 
-        fpc.enableSprint = EditorGUILayout.ToggleLeft(new GUIContent("Enable Sprint", "Determines if the player is allowed to sprint."), fpc.enableSprint);
+        fpc.enableSprint = EditorGUILayout.ToggleLeft(new GUIContent("Enable Sprint", "Determines if the playerState is allowed to sprint."), fpc.enableSprint);
 
         GUI.enabled = fpc.enableSprint;
         fpc.unlimitedSprint = EditorGUILayout.ToggleLeft(new GUIContent("Unlimited Sprint", "Determines if 'Sprint Duration' is enabled. Turning this on will allow for unlimited sprint."), fpc.unlimitedSprint);
         fpc.sprintKey = (KeyCode)EditorGUILayout.EnumPopup(new GUIContent("Sprint Key", "Determines what key is used to sprint."), fpc.sprintKey);
-        fpc.sprintSpeed = EditorGUILayout.Slider(new GUIContent("Sprint Speed", "Determines how fast the player will move while sprinting."), fpc.sprintSpeed, fpc.walkSpeed, 20f);
+        fpc.sprintSpeed = EditorGUILayout.Slider(new GUIContent("Sprint Speed", "Determines how fast the playerState will move while sprinting."), fpc.sprintSpeed, fpc.walkSpeed, 20f);
 
         //GUI.enabled = !fpc.unlimitedSprint;
-        fpc.sprintDuration = EditorGUILayout.Slider(new GUIContent("Sprint Duration", "Determines how long the player can sprint while unlimited sprint is disabled."), fpc.sprintDuration, 1f, 20f);
-        fpc.sprintCooldown = EditorGUILayout.Slider(new GUIContent("Sprint Cooldown", "Determines how long the recovery time is when the player runs out of sprint."), fpc.sprintCooldown, .1f, fpc.sprintDuration);
+        fpc.sprintDuration = EditorGUILayout.Slider(new GUIContent("Sprint Duration", "Determines how long the playerState can sprint while unlimited sprint is disabled."), fpc.sprintDuration, 1f, 20f);
+        fpc.sprintCooldown = EditorGUILayout.Slider(new GUIContent("Sprint Cooldown", "Determines how long the recovery time is when the playerState runs out of sprint."), fpc.sprintCooldown, .1f, fpc.sprintDuration);
         //GUI.enabled = true;
 
         fpc.sprintFOV = EditorGUILayout.Slider(new GUIContent("Sprint FOV", "Determines the field of view the camera changes to while sprinting."), fpc.sprintFOV, fpc.fov, 179f);
@@ -682,13 +682,13 @@ public class FirstPersonController : MonoBehaviour
 
         #region Jump
 
-        GUILayout.Label("Jump", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleLeft, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
+        GUILayout.Label("JumpByOther", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleLeft, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
 
-        fpc.enableJump = EditorGUILayout.ToggleLeft(new GUIContent("Enable Jump", "Determines if the player is allowed to jump."), fpc.enableJump);
+        fpc.enableJump = EditorGUILayout.ToggleLeft(new GUIContent("Enable JumpByOther", "Determines if the playerState is allowed to jump."), fpc.enableJump);
 
         GUI.enabled = fpc.enableJump;
-        fpc.jumpKey = (KeyCode)EditorGUILayout.EnumPopup(new GUIContent("Jump Key", "Determines what key is used to jump."), fpc.jumpKey);
-        fpc.jumpPower = EditorGUILayout.Slider(new GUIContent("Jump Power", "Determines how high the player will jump."), fpc.jumpPower, .1f, 20f);
+        fpc.jumpKey = (KeyCode)EditorGUILayout.EnumPopup(new GUIContent("JumpByOther Key", "Determines what key is used to jump."), fpc.jumpKey);
+        fpc.jumpPower = EditorGUILayout.Slider(new GUIContent("JumpByOther Power", "Determines how high the playerState will jump."), fpc.jumpPower, .1f, 20f);
         GUI.enabled = true;
 
         EditorGUILayout.Space();
@@ -699,12 +699,12 @@ public class FirstPersonController : MonoBehaviour
 
         GUILayout.Label("Crouch", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleLeft, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
 
-        fpc.enableCrouch = EditorGUILayout.ToggleLeft(new GUIContent("Enable Crouch", "Determines if the player is allowed to crouch."), fpc.enableCrouch);
+        fpc.enableCrouch = EditorGUILayout.ToggleLeft(new GUIContent("Enable Crouch", "Determines if the playerState is allowed to crouch."), fpc.enableCrouch);
 
         GUI.enabled = fpc.enableCrouch;
-        fpc.holdToCrouch = EditorGUILayout.ToggleLeft(new GUIContent("Hold To Crouch", "Requires the player to hold the crouch key instead if pressing to crouch and uncrouch."), fpc.holdToCrouch);
+        fpc.holdToCrouch = EditorGUILayout.ToggleLeft(new GUIContent("Hold To Crouch", "Requires the playerState to hold the crouch key instead if pressing to crouch and uncrouch."), fpc.holdToCrouch);
         fpc.crouchKey = (KeyCode)EditorGUILayout.EnumPopup(new GUIContent("Crouch Key", "Determines what key is used to crouch."), fpc.crouchKey);
-        fpc.crouchHeight = EditorGUILayout.Slider(new GUIContent("Crouch Height", "Determines the y scale of the player object when crouched."), fpc.crouchHeight, .1f, 1);
+        fpc.crouchHeight = EditorGUILayout.Slider(new GUIContent("Crouch Height", "Determines the y scale of the playerState object when crouched."), fpc.crouchHeight, .1f, 1);
         fpc.speedReduction = EditorGUILayout.Slider(new GUIContent("Speed Reduction", "Determines the percent 'Walk Speed' is reduced by. 1 being no reduction, and .5 being half."), fpc.speedReduction, .1f, 1);
         GUI.enabled = true;
 
@@ -719,7 +719,7 @@ public class FirstPersonController : MonoBehaviour
         GUILayout.Label("Head Bob Setup", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
         EditorGUILayout.Space();
 
-        fpc.enableHeadBob = EditorGUILayout.ToggleLeft(new GUIContent("Enable Head Bob", "Determines if the camera will bob while the player is walking."), fpc.enableHeadBob);
+        fpc.enableHeadBob = EditorGUILayout.ToggleLeft(new GUIContent("Enable Head Bob", "Determines if the camera will bob while the playerState is walking."), fpc.enableHeadBob);
         
 
         GUI.enabled = fpc.enableHeadBob;

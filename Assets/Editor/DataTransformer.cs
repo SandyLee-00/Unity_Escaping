@@ -26,8 +26,8 @@ public class DataTransformer : EditorWindow
     #endregion
 
     #region Excel -> XML 변환
-    [MenuItem("Tools/ParseExcel")]
-    public static void ParseExcel()
+    //[MenuItem("Tools/ParseExcel")]
+    /*public static void ParseExcel()
     {
         ParseTextData();
     }
@@ -64,7 +64,7 @@ public class DataTransformer : EditorWindow
         string xmlString = ToXML(new TextDataLoader() { _textData = textDatas });
         File.WriteAllText($"{Application.dataPath}/Resources/Data/TextData.xml", xmlString);
         AssetDatabase.Refresh();
-    }
+    }*/
 
     #endregion
 

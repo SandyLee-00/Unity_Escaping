@@ -20,7 +20,7 @@ public class GameManager
     public void Init()
     {
         // TODO
-        SavedGameData.PlayerName = "Player";
+        SavedGameData.PlayerName = "PlayerState";
         SavedGameData.Money = 0;
     }
 

@@ -20,12 +20,9 @@ public interface ILoader<Key, Value>
 /// </summary>
 public class DataManager
 {
-    public Dictionary<int, TextData> Texts { get; private set; }
 
     public void Init()
     {
-        // TODO :
-        // Texts = LoadXml<TextDataLoader, int, TextData>("TextData").MakeDictionary();
     }
 
     private Loader LoadXml<Loader, Key, Item>(string name) where Loader : ILoader<Key, Item>, new()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,9 @@ public class UI_StatusScene : UI_Scene
         PlayerNameText
     }
 
+    public GameObject player;
+    private PlayerStatusSystem playerStatusSystem;
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -26,17 +30,33 @@ public class UI_StatusScene : UI_Scene
         Bind<GameObject>(typeof(GameObjects));
         BindText(typeof(Texts));
 
-        // Manager.Game.Player.GetComponent<PlayerStat>().OnStatusChange += ChangeStatus;
+        player = GameObject.FindGameObjectsWithTag("Player")[0];
+        playerStatusSystem = player.GetComponent<PlayerStatusSystem>();
+        playerStatusSystem.OnChangeStatus += RefreshUI;
 
         return true;
     }
 
-    /*private void ChangeStatus()
+    private void RefreshUI()
     {
-        GetObject((int)GameObjects.HPBar).GetComponent<Slider>().value;
+        SetHPBar();
+        SetMPBar();
+    }
 
-        int level;
-        GetText((int)Texts.LevelText).GetComponent<Text>().text = $"LV {level}";
-    }*/
+    private void SetHPBar()
+    {
+        float hp = playerStatusSystem.CurrentHP;
+        float maxHP = playerStatusSystem.MaxHP;
+
+        float ratio = hp / maxHP;
+
+        GameObject hpBar = Get<GameObject>((int)GameObjects.HPBar);
+        hpBar.GetComponent<Image>().fillAmount = ratio;
+    }
+
+    private void SetMPBar()
+    {
+        
+    }
 
 }
