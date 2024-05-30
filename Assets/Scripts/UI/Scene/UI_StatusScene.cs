@@ -51,11 +51,18 @@ public class UI_StatusScene : UI_Scene
         float ratio = hp / maxHP;
 
         GameObject hpBar = Get<GameObject>((int)GameObjects.HPBar);
-        hpBar.GetComponent<Image>().fillAmount = ratio;
+        hpBar.GetComponent<Slider>().value = ratio;
     }
 
     private void SetMPBar()
     {
+        float mp = playerStatusSystem.CurrentMP;
+        float maxMP = playerStatusSystem.MaxMP;
+
+        float ratio = mp / maxMP;
+
+        GameObject mpBar = Get<GameObject>((int)GameObjects.MPBar);
+        mpBar.GetComponent<Slider>().value = ratio;
         
     }
 

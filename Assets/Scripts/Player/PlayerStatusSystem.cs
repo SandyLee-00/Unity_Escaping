@@ -19,8 +19,14 @@ public class PlayerStatusSystem : MonoBehaviour
 
     [SerializeField]
     private float hpChangeDelay = 0.5f;
+    [SerializeField]
+    private float mpChangeDelay = 0.5f;
+    [SerializeField]
+    private float mpUpAmount = 5f;
 
-    private float timeSinceLastChange = float.MaxValue;
+    private float HPtimeSinceLastChange = float.MaxValue;
+    private float MPtimeSinceLastChange = float.MaxValue;
+
     private bool isAttacked = false;
 
     public float CurrentHP { get; private set; }
@@ -43,29 +49,36 @@ public class PlayerStatusSystem : MonoBehaviour
 
     void Update()
     {
-        if (isAttacked && timeSinceLastChange < hpChangeDelay)
+        if (isAttacked && HPtimeSinceLastChange < hpChangeDelay)
         {
-            timeSinceLastChange += Time.deltaTime;
+            HPtimeSinceLastChange += Time.deltaTime;
 
-            if (timeSinceLastChange >= hpChangeDelay)
+            if (HPtimeSinceLastChange >= hpChangeDelay)
             {
                 OnInvincibilityEnd?.Invoke();
                 isAttacked = false;
             }
+        }
+
+        // TODO : 마나 회복 코루틴 써서 구현하기
+        if (CurrentMP < MaxMP && MPtimeSinceLastChange >= mpChangeDelay)
+        {
+            ChangeMP(mpUpAmount);
+            MPtimeSinceLastChange = 0f;
         }
     }
 
     public bool ChangeHP(float change)
     {
         // 체력이 0이면 false 반환
-        if (timeSinceLastChange < hpChangeDelay)
+        if (HPtimeSinceLastChange < hpChangeDelay)
         {
             return false;
         }
 
         OnChangeStatus?.Invoke();
 
-        timeSinceLastChange = 0f;
+        HPtimeSinceLastChange = 0f;
         CurrentHP += change;
         CurrentHP = Mathf.Clamp(CurrentHP, 0, MaxHP);
 

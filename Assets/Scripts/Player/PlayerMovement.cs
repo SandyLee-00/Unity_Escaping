@@ -15,17 +15,14 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 moveDirection;
 
     private Vector2 mouseDelta;
-    [SerializeField]
-    private float mouseSensitivity = 1;
+    private const float mouseSensitivity = 1;
     private float pitch = 0f;
     private float yaw = 0f;
     public float maxPitchAngle = 20f;
     Camera _camera;
 
-    [SerializeField]
-    private float jumpForce = 5f;
-    [SerializeField]
-    private float costMPJump = 10f;
+    private const float jumpForce = 5f;
+    private const float costMPJump = -40f;
 
     private void Awake()
     {
