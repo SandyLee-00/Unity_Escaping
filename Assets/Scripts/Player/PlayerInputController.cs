@@ -12,9 +12,13 @@ public class PlayerInputController : MonoBehaviour
 
     private Camera _camera;
 
+    private PlayerInput _playerInput;
+
     private void Awake()
     {
-
+        _playerInput = GetComponent<PlayerInput>();
+        // Ensure the Action Map is enabled
+        _playerInput.actions.Enable();
     }
 
     private void Start()
@@ -40,7 +44,16 @@ public class PlayerInputController : MonoBehaviour
         Debug.Log("OnLook");
 
         Vector2 mousePosition = value.Get<Vector2>();
+
+        if (_camera == null)
+        {
+            Debug.LogError("Main Camera is not found");
+            return;
+        }
+
         Vector3 mouseInWorldPosition = _camera.ScreenToWorldPoint(mousePosition);
+
+        
         Vector3 lookDirection = mouseInWorldPosition - transform.position;
 
         float angle = Mathf.Atan2(lookDirection.x, lookDirection.z) * Mathf.Rad2Deg;
